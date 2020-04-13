@@ -21,7 +21,8 @@ def extract_sites(url):
     table = soup.find('table',{'class':'tbldata14 bdrtpg'})
     links = table.findAll('a',{'class':'bl_12'})
     for each in links:
-        writer.writerow([each.text,each['href'].split("/")[-1], main_url + each['href']])
+        s = BeautifulSoup( requests.get(main_url + each['href']).content, 'lxml' )
+        writer.writerow([each.text, s.find('input',{'id':'txt_scid'})['value'] , main_url + each['href']])
 
 def build_list(url):
     response = requests.get(url)
